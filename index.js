@@ -42,13 +42,13 @@ class Products {
     constructor(price, stock) {
         this.price = price;
         this.stock = stock;
-    }
+    };
     updateStcok(purchase) {
         // if(newStock)
         this.stock -= purchase;
         //return this.stock;
-    }
-}
+    };
+};
 
 //objects creation
 
@@ -70,9 +70,9 @@ let checkout = (selection, itemStock, itemPrice) => {
         "Actualmente tenemos " +
         itemStock +
         " disponibles\n" + //preguntar lo de item stock
-            "ingrese la cantidad de " +
-            selection +
-            " que desea comprar:"
+        "ingrese la cantidad de " +
+        selection +
+        " que desea comprar:"
     );
     let parsedValue = parseInt(items),
         isNan = isNaN(parsedValue);
@@ -87,10 +87,11 @@ let checkout = (selection, itemStock, itemPrice) => {
     }; */
 
     while (parsedValue > itemStock || isNan) {
-        items = prompt("Lo sentimos, cantidad no disponible.\n\n" + "Actualmente tenemos " + itemStock + " disponibles\n" + "Ingrese nuevamente la cantidad de " + selection + " que desea comprar:");
+        items = prompt("Lo sentimos, cantidad no disponible.\n\n" + "Actualmente tenemos " + itemStock
+            + " disponibles\n" + "Ingrese nuevamente la cantidad de " + selection + " que desea comprar:");
         parsedValue = parseInt(items);
         isNan = isNaN(parsedValue);
-    }
+    };
 
     /* https://stackoverflow.com/questions/2917175/return-multiple-values-in-javascript
     https://www.javascripttutorial.net/javascript-return-multiple-values/
@@ -116,7 +117,7 @@ while (isNotValid || userChoice < 1 || userChoice > 6) {
     /* isNotValid(userValue); */
     userChoice = parseInt(userValue);
     isNotValid = isNaN(userChoice);
-}
+};
 
 switch (userChoice) {
     case 1:
@@ -128,7 +129,7 @@ switch (userChoice) {
             console.log(cuadernos.stock);
         } else {
             alert("Sin disponibilidad de producto en bodega, disculpe las molestias.");
-        }
+        };
         break;
     case 2:
         if (boligrafos.stock > 0) {
@@ -137,7 +138,7 @@ switch (userChoice) {
             console.log(boligrafos.stock);
         } else {
             alert("Sin disponibilidad de producto en bodega, disculpe las molestias.");
-        }
+        };
         break;
     case 3:
         if (lapices.stock > 0) {
@@ -146,7 +147,7 @@ switch (userChoice) {
             console.log(lapices.stock);
         } else {
             alert("Sin disponibilidad de producto en bodega, disculpe las molestias.");
-        }
+        };
         break;
     case 4:
         if (libretas.stock > 0) {
@@ -155,7 +156,7 @@ switch (userChoice) {
             console.log(libretas.stock);
         } else {
             alert("Sin disponibilidad de producto en bodega, disculpe las molestias.");
-        }
+        };
         break;
     case 5:
         if (marcadores.stock > 0) {
@@ -164,11 +165,11 @@ switch (userChoice) {
             console.log(marcadores.stock);
         } else {
             alert("Sin disponibilidad de producto en bodega, disculpe las molestias.");
-        }
+        };
         break;
     /* case 6: 
         alert('Gracias por utilizar nuestros servicios');
         break; */
     default:
         alert("Gracias por utilizar nuestros servicios - DEFAULT");
-}
+};
