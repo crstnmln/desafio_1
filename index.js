@@ -3,9 +3,10 @@
 // Object constructor creation
 
 class Products {
-    constructor(price, stock) {
+    constructor(name, price, stock) {
         this.price = price;
         this.stock = stock;
+        this.name = name;
     };
     updateStcok(purchase) {
         // if(newStock)
@@ -16,20 +17,24 @@ class Products {
 
 //objects creation
 
-const cuadernos = new Products(4500, 25);
-const boligrafos = new Products(1000, 50);
-const lapices = new Products(800, 100);
-const libretas = new Products(3500, 35);
-const marcadores = new Products(2300, 0);
+const notebooks = new Products('Cuadernos', 4500, 25);
+const pens = new Products('Bolígrafos', 1000, 50);
+const pencils = new Products('Lápices', 800, 100);
+const notepads = new Products('Libretas', 3500, 35);
+const markers = new Products('Marcadores', 2300, 0);
+let inventory = [notebooks, pens, pencils, notepads, markers];
+
+let admns = ["crstnmln", 93051410961, "gustavo", 30345, "ramirez", 1014];
 
 const modifyAdmin = (dataBase) => {
-    let addDelete = prompt("para agregar un usuario, ingrese 1 \n" + "para eliminar un usuario, ingrese  2 \n" + "para salir ingrese ESC ó 3"),
+    let addDelete = prompt("para agregar un usuario, ingrese 1 \n" + "para eliminar un usuario, ingrese  2 \n" + "para agregar un nuevo item a la seccion de productos 3\n" + "para salir ingrese ESC ó 4"),
         check = parseInt(addDelete),
         isItNan = isNaN(addDelete);
 
-    if (isItNan && check > 3) {
-        addDelete = parseInt(prompt("ERROR!\n" + "para agregar un usuario, ingrese 1 \n" + "para eliminar un usuario, ingrese  2 \n" + "para salir ingrese ESC ó 3"));
-        (check = parseInt(addDelete)), (isItNan = isNaN(addDelete));
+    if (isItNan && check > 4) {
+        addDelete = parseInt(prompt("ERROR!\n" + "para agregar un usuario, ingrese 1 \n" + "para eliminar un usuario, ingrese 2\n" + "para agregar un nuevo item a la seccion de productos 3\n" + "para salir ingrese ESC ó 4"));
+        check = parseInt(addDelete);
+        isItNan = isNaN(addDelete);
     } else if (addDelete === "ESC") {
         alert("Saliendo de Sesión de administrador");
     };
@@ -60,15 +65,18 @@ const modifyAdmin = (dataBase) => {
                 console.log(dataBase);
             };
             break;
+        case 3:
+            inventory.push(actualizarInventario());
+            break;
         default:
-            alert("Saliendo de Sesión de administrador ha seleccionado la opcion 3");
+            alert("Saliendo de Sesión de administrador por default");
             break;
     };
 
 };
 
-const adminAcces = function () {
-    let admName = prompt("Bienbenido al acceso de administrador por favor ingrese su usuario");
+const adminAcces = () => {
+    let admName = prompt("Bienvenido al acceso de administrador por favor ingrese su usuario");
     let noAccess = true;
 
 
@@ -110,11 +118,7 @@ const adminAcces = function () {
     };
 };
 
-
-// function that asks for amount of items user will purchase  - returns alert with total price and the total items purchased as it will be used later to update products stock.
-
 const checkout = (selection, itemStock, itemPrice) => {
-    // ask if it is better if I gather any info from a global or external variable or property or if I should use parameters instead.
 
     let items = prompt(
         "Usted ha seleccionado " +
@@ -147,90 +151,98 @@ const checkout = (selection, itemStock, itemPrice) => {
     return parsedValue;
 };
 
-let admns = ["crstnmln", 93051410961, "gustavo", 30345, "ramirez", 1014];
+const buyItem = () => {
 
-let userValue = prompt(
-    "Bienvenido a nuestra tienda en linea!\n\n" + "Lea e ingrese el número de acuerdo al producto deseado.\n\n" + "1. Cuadrenos\n" + "2. Bolígrafos\n" + "3. Lápices\n" + "4. Libretas\n" + "5. Marcadores\n" + "6. acceso de administrador\n" + "7. Salir.");
+    let listedItems = '';
 
-let userChoice = parseInt(userValue);
-let isNotValid = isNaN(userChoice);
+    inventory.forEach((item, itemIndex) => {
+        listedItems += `${itemIndex + 1}) ${item.name} \n`;
+    });
 
-//crear funcion para validar si es numero
 
-while (isNotValid || userChoice < 1 || userChoice > 8) {
-    userValue = prompt("Opción inválida!\n\n" + "Por favor, ingrese el número de acuerdo al producto deseado.\n\n" + "1. Cuadrenos\n" + "2. Bolígrafos\n" + "3. Lápices\n" + "4. Libretas\n" + "5. Marcadores\n" + "6. acceso de administrador\n" + "7. Salir.");
-    /* isNotValid(userValue); */
-    userChoice = parseInt(userValue);
-    isNotValid = isNaN(userChoice);
+    let userValue = prompt(
+        `Bienvenido a nuestra tienda en linea!\n\nLea e ingrese el número de acuerdo al producto deseado.\n\n${listedItems}${inventory.length + 1}) Acceso administrador\n${inventory.length + 2}) salir`);
+
+    let userChoice = parseInt(userValue);
+    let isNotValid = isNaN(userChoice);
+
+    if (userValue == null) {
+        alert("Gracias por utilizar nuestros servicios - null");
+    } else {
+
+
+        while (isNotValid || userChoice < 1 || userChoice > 8) {
+            userValue = prompt(`Opción inválida.\n\nLea e ingrese el número de acuerdo al producto deseado.\n\n${listedItems}${inventory.length + 1}) Acceso administrador\n${inventory.length + 2}) salir`);
+            /* isNotValid(userValue); */
+            userChoice = parseInt(userValue);
+            isNotValid = isNaN(userChoice);
+        };
+
+
+        for (let itemIndex = 0; itemIndex < inventory.length; itemIndex++) {
+
+            if ((userChoice - 1) === itemIndex) {
+                if (inventory[itemIndex].stock > 0) {
+                    let newStock = checkout(inventory[itemIndex].name, inventory[itemIndex].stock, inventory[itemIndex].price);
+                    inventory[itemIndex].updateStcok(newStock);
+                    console.log(inventory[itemIndex].stock);
+                    break;
+                } else {
+                    alert("Sin disponibilidad de producto en bodega, disculpe las molestias.");
+                };
+                break;
+            } else if ((userChoice) === inventory.length + 1) {
+                if (adminAcces()) {
+                    modifyAdmin(admns);
+                };
+                break;
+            } else if (userChoice === (inventory.length + 2)) {
+                alert("Gracias por utilizar nuestros servicios - DEFAULT");
+                break;
+            };
+
+        };
+
+        /* inventory.forEach((eachObject, itemIndex) => {
+    
+            if((userChoice - 1) === itemIndex){
+    
+                if (eachObject.stock > 0) {
+                    let newStock = checkout(eachObject.name, eachObject.stock, eachObject.price);
+                    eachObject.updateStcok(newStock);
+                    console.log(eachObject.stock);
+                    
+                } else {
+                    alert("Sin disponibilidad de producto en bodega, disculpe las molestias.");
+                };
+            }else if((userChoice) === inventory.length+1){
+                if (adminAcces()) {
+                    modifyAdmin(admns);
+                };
+            }else if(userChoice === (inventory.length + 2)){
+                alert("Gracias por utilizar nuestros servicios - DEFAULT");
+            }; 
+        }
+    
+        ); */
+
+    };
 };
-
-switch (userChoice) {
-    case 1:
-
-        if (cuadernos.stock > 0) {
-            let newStock = checkout("Cuadernos", cuadernos.stock, cuadernos.price);
-            cuadernos.updateStcok(newStock);
-            console.log(cuadernos.stock);
-        } else {
-            alert("Sin disponibilidad de producto en bodega, disculpe las molestias.");
-        };
-        break;
-    case 2:
-        if (boligrafos.stock > 0) {
-            let newStock = checkout("Bolígrafos", boligrafos.stock, boligrafos.price);
-            boligrafos.updateStcok(newStock);
-            console.log(boligrafos.stock);
-        } else {
-            alert("Sin disponibilidad de producto en bodega, disculpe las molestias.");
-        };
-        break;
-    case 3:
-        if (lapices.stock > 0) {
-            let newStock = checkout("Lápices", lapices.stock, lapices.price);
-            lapices.updateStcok(newStock);
-            console.log(lapices.stock);
-        } else {
-            alert("Sin disponibilidad de producto en bodega, disculpe las molestias.");
-        };
-        break;
-    case 4:
-        if (libretas.stock > 0) {
-            let newStock = checkout("Libretas", libretas.stock, libretas.price);
-            libretas.updateStcok(newStock);
-            console.log(libretas.stock);
-        } else {
-            alert("Sin disponibilidad de producto en bodega, disculpe las molestias.");
-        };
-        break;
-    case 5:
-        if (marcadores.stock > 0) {
-            let newStock = checkout("Marcadores", marcadores.stock, marcadores.price);
-            marcadores.updateStcok(newStock);
-            console.log(marcadores.stock);
-        } else {
-            alert("Sin disponibilidad de producto en bodega, disculpe las molestias.");
-        };
-        break;
-    case 6:
-        if (adminAcces()) {
-            modifyAdmin(admns);
-        };
-        break;
-    default:
-        alert("Gracias por utilizar nuestros servicios - DEFAULT");
-};
-
-
-let inventory = [cuadernos, boligrafos, lapices, libretas, marcadores];
 
 function actualizarInventario() {
 
     let nombreDeItem = prompt("inserte el nombre del nuevo producto");
-    let precio = prompt("inserte el precio");
-    let cantidad = prompt("ingrese la cantidad");
+    let precio = parseFloat(prompt("inserte el precio"));
+    let cantidad = parseFloat(prompt("ingrese la cantidad"));
 
     const nuevoElemento = new Products(nombreDeItem, precio, cantidad);
+
+    let text = "";
+    for (let propiedad in nuevoElemento) {
+        text += `${propiedad.toUpperCase()}: ${nuevoElemento[propiedad]}\n`
+    };
+    alert(`Se ha agregado a la lista:\n${text}`);
     return nuevoElemento;
 };
 
-// inventory.push(actualizarInventario());
+buyItem();

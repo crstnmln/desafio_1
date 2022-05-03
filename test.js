@@ -1,90 +1,84 @@
-
-
 "use strict";
-
-/* 
-let userValue = prompt('Please enter a number between 10 and 30 to be analyzed');
-let userChoice = parseFloat(userValue);
-let isNotValid = isNaN(userChoice); 
-
-
-
-while (isNotValid && (userChoice < 10 || userChoice > 30)) {
-    userValue = prompt('Please enter a valid number to be analyzed ');
-    userChoice = parseFloat(userValue);
-    isNotValid = isNaN(userChoice); 
-}
-
-
-(userChoice > 10 && userChoice < 20) ? (console.log(`the number ${userChoice} is greater than 10`), alert(`the number ${userChoice} is greater than 10`)) 
-: (userChoice > 20 && userChoice < 30) ? (console.log(`the number ${userChoice} is greater than 20 but less than 30`), alert(`the number ${userChoice} is greater than 20 but less than 30`)): console.log("this option should not be visible")
-
-    
-
-let quantity = parseInt(prompt('Inserte la cantidad de veces a repetir la palabra'));
-isNotValid = isNaN(quantity); 
-
-while (isNotValid) {
-    quantity = prompt('Please enter a valid number to be analyzed');
-    isNotValid = isNaN(quantity); 
-}
-
-for(let i = 1; i <= quantity; i++){
-    if(i === 1){
-        console.log('Hola! ' + i  + ' vez');
-    } else {
-        console.log('Hola! ' + i  + ' veces');
-    }
-}
- */
 
 // Object constructor creation
 
 class Products {
     constructor(name, price, stock) {
-        this.name = name;
         this.price = price;
         this.stock = stock;
-        this.colors = [];
-    }
+        this.name = name;
+    };
     updateStcok(purchase) {
         // if(newStock)
         this.stock -= purchase;
         //return this.stock;
-    }
-}
+    };
+};
 
 //objects creation
 
-const notebooks = new Products("Notebooks", 4500, 25);
-const boligrafos = new Products("Pens", 1000, 50);
-const lapices = new Products("Pencils", 800, 100);
-const libretas = new Products("Notepads", 3500, 35);
-const marcadores = new Products("Markers", 2300, 0);
+const notebooks = new Products('Cuadernos', 4500, 25);
+const pens = new Products('Bolígrafos', 1000, 50);
+const pencils = new Products('Lápices', 800, 100);
+const notepads = new Products('Libretas', 3500, 35);
+const markers = new Products('Marcadores', 2300, 0);
+let inventory = [notebooks, pens, pencils, notepads, markers];
 
-// notebooks pens pencils markers notepads
-let inventory = [notebooks, boligrafos, lapices, libretas, marcadores];
+let admns = ["crstnmln", 93051410961, "gustavo", 30345, "ramirez", 1014];
 
+const modifyAdmin = (dataBase) => {
+    let addDelete = prompt("para agregar un usuario, ingrese 1 \n" + "para eliminar un usuario, ingrese  2 \n" + "para agregar un nuevo item a la seccion de productos 3\n" + "para salir ingrese ESC ó 4"),
+        check = parseInt(addDelete),
+        isItNan = isNaN(addDelete);
 
-inventory.forEach((objetoEnArray, indiceDeObjeto))
+    if (isItNan && check > 4) {
+        addDelete = parseInt(prompt("ERROR!\n" + "para agregar un usuario, ingrese 1 \n" + "para eliminar un usuario, ingrese 2\n" + "para agregar un nuevo item a la seccion de productos 3\n" + "para salir ingrese ESC ó 4"));
+        check = parseInt(addDelete);
+        isItNan = isNaN(addDelete);
+    } else if (addDelete === "ESC") {
+        alert("Saliendo de Sesión de administrador");
+    };
 
+    switch (check) {
+        case 1:
+            let usr = prompt("por favor ingrese el nombre de usuario");
+            let pass = prompt("Por favor ingrese contraseña numérica");
+            check = parseInt(pass);
 
+            while (!check) {
+                let pass = prompt("Error, su contraseña debe ser solo numerica, \n Por favor ingrese contraseña numérica");
+                check = parseInt(pass);
+            };
+            dataBase.push(usr, check);
+            alert('se ha guardado ' + usr + pass);
+            console.log(dataBase);
+            break;
+        case 2:
+            if (dataBase.length <= 3) {
+                alert("Error, no esta permitido eliminar al Administrador Principal");
+            } else {
+                let deletedPass = dataBase.pop();
+                let deletedUser = dataBase.pop();
 
-function actualizarInventario() {
-    let nombreDeItem = prompt("inserte el nombre del nuevo producto");
-    let precio = prompt("inserte el precio");
-    let cantidad = prompt("ingrese la cantidad");
+                alert("Se ha eliminado el usuario " + deletedUser);
+                console.log(" se eliminó " + deletedUser + " y " + deletedPass);
+                console.log(dataBase);
+            };
+            break;
+        case 3:
+            inventory.push(actualizarInventario());
+            break;
+        default:
+            alert("Saliendo de Sesión de administrador por default");
+            break;
+    };
 
-    const nuevoElemento = new Products(nombreDeItem, precio, cantidad);
-    return nuevoElemento;
-}
+};
 
-//inventory.push(actualizarInventario());
-
-const adminAcces = function () {
-    let admName = prompt("Bienbenido al acceso de administrador por favor ingrese su usuario");
+const adminAcces = () => {
+    let admName = prompt("Bienvenido al acceso de administrador por favor ingrese su usuario");
     let noAccess = true;
-    
+
 
     if (admName === "ESC") {
         alert("Saliendo de Sesion de administrador");
@@ -102,7 +96,7 @@ const adminAcces = function () {
                     noAccess = false;
                     console.log("tomo la opcion " + admns[i]);
                     break;
-                }else {
+                } else {
                     noAccess = true;
                     console.log("salto la opcion " + admns[i]);
                 };
@@ -112,53 +106,19 @@ const adminAcces = function () {
                 console.log("f");
                 admName = prompt("Error de credenciales, por favor ingrese su usuario");
                 pssword = parseInt(prompt("Ingrese su contraseña"));
-                isItNan = isNaN(pssword);
             };
 
             if (admName === "ESC") {
                 alert("Saliendo de Sesion de administrador");
                 return false;
-            } 
+            }
         };
 
         return true;
     };
 };
 
-
-/*  while (((admName != admns[0]) && (pssword != admns[1])) || ((admName != admns[2]) && (pssword != admns[3])) || isItNan) {
-            admName = prompt("Error de credenciales, por favor ingrese su usuario");
-            pssword = parseInt(prompt("Ingrese su contraseña"));
-            isItNan = isNaN(pssword);
-        };
-        return true; */
-//adminAcces();
-
-/* para tener en cuenta si agrego un nuevo producto, crear un for que me creee un switch case con cada valor agregado */
-//-----------------------------------------------------------------------------
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-// function that asks for amount of items user will purchase  - returns alert with total price and the total items purchased as it will be used later to update products stock.
-
-let checkout = (selection, itemStock, itemPrice) => {
-    // ask if it is better if I gather any info from a global or external variable or property or if I should use parameters instead.
+const checkout = (selection, itemStock, itemPrice) => {
 
     let items = prompt(
         "Usted ha seleccionado " +
@@ -167,31 +127,23 @@ let checkout = (selection, itemStock, itemPrice) => {
         "Actualmente tenemos " +
         itemStock +
         " disponibles\n" + //preguntar lo de item stock
-            "ingrese la cantidad de " +
-            selection +
-            " que desea comprar:"
+        "ingrese la cantidad de " +
+        selection +
+        " que desea comprar:"
     );
     let parsedValue = parseInt(items),
         isNan = isNaN(parsedValue);
-
-    /* while (isNan) {
-        items = prompt('Lo sentimos, no ha ingresado una cantidad válida.\n\n' +
-            'Actualmente tenemos ' + itemStock + ' disponibles\n' +
-            'ingrese nuevamente la cantidad de ' + selection + ' que desea comprar:');
-            parsedValue = parseInt(items);
-            isNan = isNaN(parsedValue);
-
-    }; */
 
     while (parsedValue > itemStock || isNan) {
         items = prompt("Lo sentimos, cantidad no disponible.\n\n" + "Actualmente tenemos " + itemStock + " disponibles\n" + "Ingrese nuevamente la cantidad de " + selection + " que desea comprar:");
         parsedValue = parseInt(items);
         isNan = isNaN(parsedValue);
-    }
+    };
 
     /* https://stackoverflow.com/questions/2917175/return-multiple-values-in-javascript
     https://www.javascripttutorial.net/javascript-return-multiple-values/
     */
+
     let pay = parsedValue * itemPrice;
 
     alert("el valor total de su compra es: " + pay + ".\n\n" + "GRACIAS POR PREFERIRNOS");
@@ -199,73 +151,98 @@ let checkout = (selection, itemStock, itemPrice) => {
     return parsedValue;
 };
 
-let userValue = prompt(
-    "Bienvenido a nuestra tienda en linea!\n\n" + "Lea e ingrese el número de acuerdo al producto deseado.\n\n" + "1. Cuadrenos\n" + "2. Bolígrafos\n" + "3. Lápices\n" + "4. Libretas\n" + "5. Marcadores\n" + "6. Salir del menú"
-);
-/* isNotValid(userValue); */
-let userChoice = parseInt(userValue);
-let isNotValid = isNaN(userChoice);
+const buyItem = () => {
 
-//crear funcion para validar si es numero
+    let listedItems = '';
 
-while (isNotValid || userChoice < 1 || userChoice > 6) {
-    userValue = prompt("Opción inválida!\n\n" + "Por favor, ingrese el número de acuerdo al producto deseado.\n\n" + "1. Cuadrenos\n" + "2. Bolígrafos\n" + "3. Lápices\n" + "4. Libretas\n" + "5. Marcadores\n" + "6. Salir del menú");
-    /* isNotValid(userValue); */
-    userChoice = parseInt(userValue);
-    isNotValid = isNaN(userChoice);
-}
+    inventory.forEach((item, itemIndex) => {
+        listedItems += `${itemIndex + 1}) ${item.name} \n`;
+    });
 
-switch (userChoice) {
-    case 1:
-        //preguntar lo del ternary con multiples lineas
 
-        if (cuadernos.stock > 0) {
-            let newStock = checkout("Cuadernos", cuadernos.stock, cuadernos.price);
-            cuadernos.updateStcok(newStock);
-            console.log(cuadernos.stock);
-        } else {
-            alert("Sin disponibilidad de producto en bodega, disculpe las molestias.");
+    let userValue = prompt(
+        `Bienvenido a nuestra tienda en linea!\n\nLea e ingrese el número de acuerdo al producto deseado.\n\n${listedItems}${inventory.length + 1}) Acceso administrador\n${inventory.length + 2}) salir`);
+
+    let userChoice = parseInt(userValue);
+    let isNotValid = isNaN(userChoice);
+
+    if (userValue == null) {
+        alert("Gracias por utilizar nuestros servicios - null");
+    } else {
+
+
+        while (isNotValid || userChoice < 1 || userChoice > 8) {
+            userValue = prompt(`Opción inválida.\n\nLea e ingrese el número de acuerdo al producto deseado.\n\n${listedItems}${inventory.length + 1}) Acceso administrador\n${inventory.length + 2}) salir`);
+            /* isNotValid(userValue); */
+            userChoice = parseInt(userValue);
+            isNotValid = isNaN(userChoice);
+        };
+
+
+        for (let itemIndex = 0; itemIndex < inventory.length; itemIndex++) {
+
+            if ((userChoice - 1) === itemIndex) {
+                if (inventory[itemIndex].stock > 0) {
+                    let newStock = checkout(inventory[itemIndex].name, inventory[itemIndex].stock, inventory[itemIndex].price);
+                    inventory[itemIndex].updateStcok(newStock);
+                    console.log(inventory[itemIndex].stock);
+                    break;
+                } else {
+                    alert("Sin disponibilidad de producto en bodega, disculpe las molestias.");
+                };
+                break;
+            } else if ((userChoice) === inventory.length + 1) {
+                if (adminAcces()) {
+                    modifyAdmin(admns);
+                };
+                break;
+            } else if (userChoice === (inventory.length + 2)) {
+                alert("Gracias por utilizar nuestros servicios - DEFAULT");
+                break;
+            };
+
+        };
+
+        /* inventory.forEach((eachObject, itemIndex) => {
+    
+            if((userChoice - 1) === itemIndex){
+    
+                if (eachObject.stock > 0) {
+                    let newStock = checkout(eachObject.name, eachObject.stock, eachObject.price);
+                    eachObject.updateStcok(newStock);
+                    console.log(eachObject.stock);
+                    
+                } else {
+                    alert("Sin disponibilidad de producto en bodega, disculpe las molestias.");
+                };
+            }else if((userChoice) === inventory.length+1){
+                if (adminAcces()) {
+                    modifyAdmin(admns);
+                };
+            }else if(userChoice === (inventory.length + 2)){
+                alert("Gracias por utilizar nuestros servicios - DEFAULT");
+            }; 
         }
-        break;
-    case 2:
-        if (boligrafos.stock > 0) {
-            let newStock = checkout("Bolígrafos", boligrafos.stock, boligrafos.price);
-            boligrafos.updateStcok(newStock);
-            console.log(boligrafos.stock);
-        } else {
-            alert("Sin disponibilidad de producto en bodega, disculpe las molestias.");
-        }
-        break;
-    case 3:
-        if (lapices.stock > 0) {
-            let newStock = checkout("Lápices", lapices.stock, lapices.price);
-            lapices.updateStcok(newStock);
-            console.log(lapices.stock);
-        } else {
-            alert("Sin disponibilidad de producto en bodega, disculpe las molestias.");
-        }
-        break;
-    case 4:
-        if (libretas.stock > 0) {
-            let newStock = checkout("Libretas", libretas.stock, libretas.price);
-            libretas.updateStcok(newStock);
-            console.log(libretas.stock);
-        } else {
-            alert("Sin disponibilidad de producto en bodega, disculpe las molestias.");
-        }
-        break;
-    case 5:
-        if (marcadores.stock > 0) {
-            let newStock = checkout("Marcadores", marcadores.stock, marcadores.price);
-            marcadores.updateStcok(newStock);
-            console.log(marcadores.stock);
-        } else {
-            alert("Sin disponibilidad de producto en bodega, disculpe las molestias.");
-        }
-        break;
-    /* case 6: 
-        alert('Gracias por utilizar nuestros servicios');
-        break; */
-    default:
-        alert("Gracias por utilizar nuestros servicios - DEFAULT");
-}
+    
+        ); */
+
+    };
+};
+
+function actualizarInventario() {
+
+    let nombreDeItem = prompt("inserte el nombre del nuevo producto");
+    let precio = parseFloat(prompt("inserte el precio"));
+    let cantidad = parseFloat(prompt("ingrese la cantidad"));
+
+    const nuevoElemento = new Products(nombreDeItem, precio, cantidad);
+
+    let text = "";
+    for (let propiedad in nuevoElemento) {
+        text += `${propiedad.toUpperCase()}: ${nuevoElemento[propiedad]}\n`
+    };
+    alert(`Se ha agregado a la lista:\n${text}`);
+    return nuevoElemento;
+};
+
+buyItem();
